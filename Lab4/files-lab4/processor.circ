@@ -442,7 +442,8 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <comp lib="4" loc="(370,280)" name="ROM">
       <a name="dataWidth" val="32"/>
       <a name="contents">addr/data: 8 32
-20040004 20820002 441020 10440002 2042fffd 1000fffd 20
+20040008 20020001 10800008 20a50001 10a40006 403020 3820 20e70001
+461020 10e5fff9 1000fffc 1000ffff
 </a>
     </comp>
     <comp lib="4" loc="(130,270)" name="Register"/>

@@ -1,0 +1,2 @@
+line.c.o: line.c project.h /opt/mcb32tools/include/pic32mx.h
+line.c project.h /opt/mcb32tools/include/pic32mx.h :

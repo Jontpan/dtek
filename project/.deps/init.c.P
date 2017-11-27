@@ -1,8 +1,8 @@
-main.c.o: main.c /opt/mcb32tools/include/pic32mx.h \
+init.c.o: init.c /opt/mcb32tools/include/pic32mx.h \
  /opt/mcb32tools/include/stdint.h \
  /opt/mcb32tools/lib/gcc/mipsel-mcb32-elf/4.9.2/include/stdint-gcc.h \
- project.h init.h
-main.c /opt/mcb32tools/include/pic32mx.h :
+ project.h
+init.c /opt/mcb32tools/include/pic32mx.h :
  /opt/mcb32tools/include/stdint.h :
  /opt/mcb32tools/lib/gcc/mipsel-mcb32-elf/4.9.2/include/stdint-gcc.h :
- project.h init.h :
+ project.h :

@@ -1,6 +1,6 @@
-line.c.o: line.c project.h /opt/mcb32tools/include/stdint.h \
- /opt/mcb32tools/lib/gcc/mipsel-mcb32-elf/4.9.2/include/stdint-gcc.h \
- /opt/mcb32tools/include/pic32mx.h
-line.c project.h /opt/mcb32tools/include/stdint.h :
+line.c.o: line.c project.h /opt/mcb32tools/include/pic32mx.h \
+ /opt/mcb32tools/include/stdint.h \
+ /opt/mcb32tools/lib/gcc/mipsel-mcb32-elf/4.9.2/include/stdint-gcc.h
+line.c project.h /opt/mcb32tools/include/pic32mx.h :
+ /opt/mcb32tools/include/stdint.h :
  /opt/mcb32tools/lib/gcc/mipsel-mcb32-elf/4.9.2/include/stdint-gcc.h :
- /opt/mcb32tools/include/pic32mx.h :

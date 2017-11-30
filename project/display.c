@@ -21,19 +21,9 @@ void display_update() {
 }
 
 void set_pixel(int x, int y, int on) {
-	uint8_t k;
-	switch (y % 8) {
-		case 0: k = 0x01; break;
-		case 1: k = 0x02; break;
-		case 2: k = 0x04; break;
-		case 3: k = 0x08; break;
-		case 4: k = 0x10; break;
-		case 5: k = 0x20; break;
-		case 6: k = 0x40; break;
-		case 7: k = 0x80; break;
-	}
-
 	int i = (y / 8) * 128 + x;
+
+	uint8_t k = 1 << (y % 8);
 
 	if (on) {
 		pixels[i] |= k;

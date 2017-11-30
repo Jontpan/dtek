@@ -15,23 +15,7 @@ int getbtns12() {
 	return btn2 | btn1;
 }
 
-void move_right(struct Line *line) {
-        line->xpos += 1;
-}
-
-void move_left(struct Line *line) {
-        line->xpos -= 1;
-}
-
-void move_up(struct Line *line) {
-        line->ypos -= 1;
-}
-
-void move_down(struct Line *line) {
-        line->ypos += 1;
-}
-
-void turn(struct Line *line) {
+void turn(Line *line) {
 	int read;
 	if (line->id == 1) {
 		read = getbtns34();
@@ -53,8 +37,6 @@ void turn(struct Line *line) {
 			line->clicked = 1;
 	        }
 	}
-
-
 }
 
 void bug() {
@@ -70,20 +52,17 @@ int mod(int n, int N) {
 	return (r < 0) ? (r + N) : r;
 }
 
-void move(struct Line *line) {
+void move(Line *line) {
         turn(line);
 
 
         switch (mod(line->direction, 4)) {
-                case 0: move_up(line); break;
-                case 1: move_right(line); break;
-                case 2: move_down(line); break;
-                case 3: move_left(line); break;
-                default: bug();
-                        // Hopefully never get here
-                        return;
+                case UP: line->ypos--; break;
+                case RIGHT: line->xpos++; break;
+                case DOWN: line->ypos++; break;
+                case LEFT: line->xpos--; break;
         }
 
-	check_death(line->xpos, line->ypos);
+	check_death(line);
 	set_next_line(line, 1);
 }

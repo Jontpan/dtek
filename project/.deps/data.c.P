@@ -1,6 +1,6 @@
-init.c.o: init.c project.h /opt/mcb32tools/include/pic32mx.h \
+data.c.o: data.c project.h /opt/mcb32tools/include/pic32mx.h \
  /opt/mcb32tools/include/stdint.h \
  /opt/mcb32tools/lib/gcc/mipsel-mcb32-elf/4.9.2/include/stdint-gcc.h
-init.c project.h /opt/mcb32tools/include/pic32mx.h :
+data.c project.h /opt/mcb32tools/include/pic32mx.h :
  /opt/mcb32tools/include/stdint.h :
  /opt/mcb32tools/lib/gcc/mipsel-mcb32-elf/4.9.2/include/stdint-gcc.h :

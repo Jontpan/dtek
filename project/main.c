@@ -5,15 +5,17 @@
 
 int game_array[64][16];
 
-struct Line player1;
-struct Line player2;
+Line player1;
+Line player2;
+
+int gameon;
 
 void delay(int cyc) {
 	int i;
 	for(i = cyc; i > 0; i--);
 }
 
-void start(struct Line *player1, struct Line *player2) {
+void start(Line *player1, Line *player2) {
 	player1->xpos = 0;
 	player1->ypos = 0;
 	player1->direction = 1;
@@ -24,17 +26,38 @@ void start(struct Line *player1, struct Line *player2) {
 	player2->direction = 3;
 	player2->id = 2;
 
+	delay(10000000);
+
 	clear_disp();
-	delay(1000000);
 }
 
-void check_death(int x, int y) {
-	if (get_pixel(x, y)) {
-		start(&player1, &player2);
+void startscreen() {
+	clear_disp();
+	int x = 30;
+	int y = 5;
+	write_startscreen(&x, y);
+	x = 30;
+	y = 22;
+	write_press(&x, y);
+	x = 70;
+	write_to_start(&x, y);
+	display_update();
+
+	delay(100);
+}
+
+void check_death(Line *line) {
+	if (get_pixel(line->xpos, line->ypos)) {
+		line->lives--;
+		if (line->lives <= 0) {
+			//endscreen(1);
+		} else {
+			start(&player1, &player2);
+		}
 	}
 }
 
-void set_next_line(struct Line *line, int width) {
+void set_next_line(Line *line, int width) {
 	int x = mod(line->xpos, 128 / width);
 	int y = mod(line->ypos, 32 / width);
 
@@ -51,15 +74,20 @@ int main(void) {
 	clear_disp();
 
 	start(&player1, &player2);
+	player1.lives = 3;
+	player2.lives = 3;
 
-	int gameon = 1;
+	startscreen();
+	display_update();
+
+	gameon = 0;
 	while(gameon) {
 		move(&player1);
 		move(&player2);
 		set_next_line(&player1, 1);
 		set_next_line(&player2, 1);
 		display_update();
-		delay(100000);
+		delay(500000);
 	}
 
 	for(;;) ;

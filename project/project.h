@@ -27,6 +27,8 @@ void set_pixel(int, int, int);
 
 int getbtns12();
 
+int getbtns34();
+
 uint8_t spi_send_recv(uint8_t);
 
 void display_update();
@@ -50,5 +52,3 @@ typedef struct {
         int lives;
         int down;
 } Line;
-
-void check_death(Line *line);

@@ -274,7 +274,7 @@ void write_o(int *x, int y) {
 }
 
 void write_K(int *x, int y) {
-        
+
 }
 
 write_excl(int *x, int y) {
@@ -324,7 +324,7 @@ void write_press(int *x, int y) {
 void write_to_start(int *x, int y) {
         write_t(x, y);
         write_o(x, y);
-        *x += 4;
+        (*x) += 4;
 
         write_s(x, y);
         write_t(x, y);
@@ -338,4 +338,56 @@ write_startscreen(int *x, int y) {
         write_die(x, y);
         write_kurwe(x, y);
         write_excl(x, y);
+}
+
+write_1(int *x, int y) {
+  set_pixel(*x-1, y+1, 1);
+
+  int i;
+  for (i = 0; i < 7; i++) {
+    set_pixel(*x, y+i, 1);
+    set_pixel(*x+1, y+i, 1);
+  }
+
+  (*x) += 6;
+}
+write_2(int *x, int y) {
+  int i;
+  for (i = 0; i < 4; i++) {
+    set_pixel(*x+1+i, y, 1); //Roof
+  }
+  for (i = 0; i < 6; i++) {
+    set_pixel(*x+i, y+6, 1); //Floor
+  }
+  for (i = 0; i < 3; i++) {
+    set_pixel(*x+i, y+5-i, 1); //Stairs
+    set_pixel(*x+1+i, y+5-i, 1);
+  }
+  set_pixel(*x, y+1, 1);
+  set_pixel(*x+1, y+1, 1);
+  set_pixel(*x+4, y+1, 1);
+  set_pixel(*x+5, y+1, 1);
+  set_pixel(*x+4, y+2, 1);
+  set_pixel(*x+5, y+2, 1);
+  set_pixel(*x+4,y+3, 1);
+
+  (*x) += 6;
+}
+
+write_p1(int *x, int y) {
+  write_p(x,y);
+  write_1(x,y);
+}
+
+write_p2(int *x, int y) {
+  write_p(x,y);
+  write_2(x,y);
+}
+
+write_wins(int *x, int y) {
+  write_w(x,y);
+  write_i(x,y);
+  write_n(x,y);
+  write_s(x,y);
+  write_excl(x,y);
 }

@@ -62,7 +62,4 @@ void move(Line *line) {
                 case DOWN: line->ypos++; break;
                 case LEFT: line->xpos--; break;
         }
-
-	check_death(line);
-	set_next_line(line, 1);
 }

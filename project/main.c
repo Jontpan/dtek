@@ -3,8 +3,6 @@
 #include "project.h"
 #include "init.h"
 
-int game_array[64][16];
-
 Line player1;
 Line player2;
 
@@ -46,11 +44,15 @@ void startscreen() {
 	delay(100);
 }
 
+void endscreen(int id) {
+	// TODO
+}
+
 void check_death(Line *line) {
 	if (get_pixel(line->xpos, line->ypos)) {
 		line->lives--;
 		if (line->lives <= 0) {
-			//endscreen(1);
+			startscreen();
 		} else {
 			start(&player1, &player2);
 		}
@@ -77,17 +79,14 @@ int main(void) {
 	player1.lives = 3;
 	player2.lives = 3;
 
-	startscreen();
-	display_update();
-
-	gameon = 0;
+	gameon = 1;
 	while(gameon) {
 		move(&player1);
 		move(&player2);
 		set_next_line(&player1, 1);
 		set_next_line(&player2, 1);
 		display_update();
-		delay(500000);
+		delay(200000);
 	}
 
 	for(;;) ;

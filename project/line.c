@@ -31,11 +31,11 @@ void turn(Line *line) {
 	if (!line->clicked) {
 		if (read == 1) {
 	                line->direction++;
-	                line->clicked = 1;
 	        } else if (read == 2) {
 	                line->direction--;
-			line->clicked = 1;
 	        }
+
+		line->clicked = 1;
 	}
 }
 
@@ -45,7 +45,7 @@ void bug() {
                 set_pixel(127, i, 1);
         }
         display_update();
-};
+}
 
 int mod(int n, int N) {
 	int r = n % N;

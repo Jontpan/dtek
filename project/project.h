@@ -48,11 +48,7 @@ typedef struct {
         int id;
         int clicked;
         int lives;
+        int down;
 } Line;
-
-typedef struct {
-        int x;
-        int y;
-} textpointer;
 
 void check_death(Line *line);

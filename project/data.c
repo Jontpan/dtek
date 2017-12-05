@@ -273,6 +273,10 @@ void write_o(int *x, int y) {
         (*x) += 4;
 }
 
+void write_K(int *x, int y) {
+        
+}
+
 write_excl(int *x, int y) {
         int i;
         for (i = 0; i < 5; i++) {

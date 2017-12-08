@@ -10,6 +10,7 @@ int gameon;
 
 void delay(int cyc) {
 	int i;
+
 	for(i = cyc; i > 0; i--);
 }
 
@@ -43,21 +44,24 @@ void startscreen() {
 
 void endscreen(int id) {
 	clear_disp();
+	display_update();
 	int x = 35;
 	int y = 10;
-	if(id==2){
-		write_p1(&x,y);
-	}
 	if(id==1){
+		write_p1(&x,y);
+	} else if(id==2){
 		write_p2(&x,y);
+	} else {
+		write_Achtung(&x,y); //Something went wrong
 	}
-	x = 50;
+	x = 55;
 	write_wins(&x,y);
 }
 
 int check_death(Line *line, volatile uint8_t *pe) {
 	if (get_pixel(line->xpos, line->ypos)) {
 		line->lives--;
+
 		//Update lights
 		int player = line->id;
 		int lives = line->lives;
@@ -124,13 +128,6 @@ int main(void) {
 	player1.lives = 3;
 	player2.lives = 3;
 
-	//Lights on:
-	volatile int* p = (volatile int*) 0xbf886100; // Tris E
-  *p &= ~0xff; // Set Tris E 7-0 to output
-	volatile uint8_t* pe = (volatile uint8_t*) 0xbf886110; // Port E
-  *pe = 0x00; //pointer to LED output.
-	(*pe) = 0xe7; //11100111
-
 	int x = 30;
 	int y = 5;
 	write_startscreen(&x, y);
@@ -146,8 +143,32 @@ int main(void) {
 		start = getbtns12() | getbtns34();
 		delay(10);
 	}
+
+	//Lights on:
+	volatile int* p = (volatile int*) 0xbf886100; // Tris E
+	*p &= ~0xff; // Set Tris E 7-0 to output
+	volatile uint8_t* pe = (volatile uint8_t*) 0xbf886110; // Port E
+	*pe = 0x00; //pointer to LED output.
+	(*pe) = 0xe7; //11100111
+
 	clear_disp();
-	delay(2000);
+	delay(10000);
+	int i = 0;
+	int flickers = 6;
+	for (i = 0; i < flickers; i++) {
+		x = 5;
+		y = 5;
+		write_p1(&x,y);
+		x = 110;
+		y = 20;
+		write_p2(&x,y);
+		display_update();
+		delay(1000000);
+		clear_disp();
+		display_update();
+		delay(100000);
+	}
+	PORTD = 0x0; //Reset buttons
 
 	gameon = 1;
 	while(gameon) {
@@ -160,12 +181,17 @@ int main(void) {
 		display_update();
 		delay(200000);
 	}
-	int id;
-	if(player1.lives == 0) {
-		id = 1;
-	}
-	if(player2.lives == 0) {
+	//Go by LEDs instead of player.lives
+	int id; //Which name to print (winner)
+	int lives = *pe;
+	int p1Lives = lives >> 5; //Three most significant
+	int p2Lives = lives & 0x7; //Three least significant
+	if(p1Lives == 0) {
 		id = 2;
+	} else if(p2Lives == 0) {
+		id = 1; //P2 loss --> P1 win and vice versa
+	} else {
+		id = 3; //Something went wrong
 	}
 	endscreen(id);
 	display_update();

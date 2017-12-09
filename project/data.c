@@ -391,3 +391,10 @@ write_wins(int *x, int y) {
   write_s(x,y);
   write_excl(x,y);
 }
+
+write_draw(int *x, int y) {
+  write_d(x,y);
+  write_r(x,y);
+  write_a(x,y);
+  write_w(x,y);
+}

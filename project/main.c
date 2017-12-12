@@ -56,6 +56,7 @@ void endscreen(int id) {
 	} else if(id==2){
 		write_p2(&x,y);
 	} else if(id==3){
+		x = 52; //write to the center
 		write_draw(&x,y);
 		return;
 	} else {
@@ -142,7 +143,7 @@ void end() {
 
 void flicker() {
 	int i, x, y;
-	int flickers = 6;
+	int flickers = 3;
 	for (i = 0; i < flickers; i++) {
 		x = 5;
 		y = 5;
@@ -151,9 +152,9 @@ void flicker() {
 		y = 20;
 		write_p2(&x,y);
 		display_update();
-		delay(2000000);
+		delay(1000000);
 		clear_disp();
-		delay(2000000);
+		delay(1000000);
 	}
 	PORTD = 0x0; //Reset buttons
 }

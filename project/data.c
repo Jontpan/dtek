@@ -273,11 +273,32 @@ void write_o(int *x, int y) {
         (*x) += 4;
 }
 
-void write_K(int *x, int y) {
+void write_b(int *x, int y) {
+        int i;
+        for (i = 0; i < 7; i++) {
+                set_pixel(*x, y + i, 1);
+        }
 
+        for (i = 3; i < 7; i++) {
+                set_pixel(*x + 2, y + i, 1);
+        }
+
+        set_pixel(*x + 1, y + 2, 1);
+        set_pixel(*x + 1, y + 6, 1);
+
+        (*x) += 4;
 }
 
-write_excl(int *x, int y) {
+void write_btn1(int *x, int y) {
+        write_b(x, y);
+        write_t(x, y);
+        write_n(x, y);
+        write_1(x, y);
+
+        *x += 4;
+}
+
+void write_excl(int *x, int y) {
         int i;
         for (i = 0; i < 5; i++) {
                 set_pixel((*x), y + i, 1);
@@ -319,6 +340,8 @@ void write_press(int *x, int y) {
         write_e(x, y);
         write_s(x, y);
         write_s(x, y);
+
+        (*x) += 4;
 }
 
 void write_to_start(int *x, int y) {

@@ -11,13 +11,18 @@ uint8_t spi_send_recv(uint8_t data) {
 	return SPI2BUF;
 }
 
-void display_update() {
+void send_to_screen() {
 	int j;
 	set_disp_data();
 
 	for(j = 0; j < 512; j++) {
 		spi_send_recv(pixels[j]);
 	}
+}
+
+void display_update() {
+	send_to_screen();
+	send_to_screen();
 }
 
 void set_pixel(int x, int y, int on) {

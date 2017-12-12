@@ -24,10 +24,6 @@ void start(Line *player1, Line *player2) {
 	player2->ypos = 31;
 	player2->direction = 3;
 	player2->id = 2;
-
-	delay(10000000);
-
-	clear_disp();
 }
 
 void startscreen() {
@@ -38,8 +34,16 @@ void startscreen() {
 	x = 30;
 	y = 22;
 	write_press(&x, y);
-	x = 70;
+	write_btn1(&x, y);
 	write_to_start(&x, y);
+
+	display_update();
+
+	volatile int startGame = 0;
+	while (startGame != 1) {
+		startGame = getbtns12();
+		delay(10);
+	}
 }
 
 void endscreen(int id) {
@@ -103,14 +107,6 @@ int check_death(Line *line, volatile uint8_t *pe) {
 		}
 		(*pe) &= ~off;
 
-/*
-		if (line->lives <= 0) {
-			gameon = 0;
-		} else {
-			start(&player1, &player2);
-		}
-		*/
-
 		//Player has died:
 		return 1;
 	}
@@ -128,6 +124,40 @@ void set_next_line(Line *line, int width) {
 	}
 }
 
+void end() {
+	int id; //Which name to print (winner)
+	if(player1.lives == player2.lives) {
+		//Draw. Both lost the match at the same time.
+		id = 3;
+	} else if(player2.lives == 0) {
+		id = 1; //P2 loss --> P1 win and vice versa
+	} else if(player1.lives == 0) {
+		id = 2;
+	} else {
+		id = 4; //Something went wrong
+	}
+	endscreen(id);
+	display_update();
+}
+
+void flicker() {
+	int i, x, y;
+	int flickers = 6;
+	for (i = 0; i < flickers; i++) {
+		x = 5;
+		y = 5;
+		write_p1(&x,y);
+		x = 110;
+		y = 20;
+		write_p2(&x,y);
+		display_update();
+		delay(2000000);
+		clear_disp();
+		delay(2000000);
+	}
+	PORTD = 0x0; //Reset buttons
+}
+
 int main(void) {
 	init();
 	clear_disp();
@@ -136,21 +166,7 @@ int main(void) {
 	player1.lives = 3;
 	player2.lives = 3;
 
-	int x = 30;
-	int y = 5;
-	write_startscreen(&x, y);
-	x = 30;
-	y = 22;
-	write_press(&x, y);
-	x = 70;
-	write_to_start(&x, y);
-	display_update();
-
-	volatile int startGame = 0;
-	while (startGame == 0) {
-		startGame = getbtns12() | getbtns34();
-		delay(10);
-	}
+	startscreen();
 
 	//Lights on:
 	volatile int* p = (volatile int*) 0xbf886100; // Tris E
@@ -161,22 +177,8 @@ int main(void) {
 
 	clear_disp();
 	delay(10000);
-	int i = 0;
-	int flickers = 6;
-	for (i = 0; i < flickers; i++) {
-		x = 5;
-		y = 5;
-		write_p1(&x,y);
-		x = 110;
-		y = 20;
-		write_p2(&x,y);
-		display_update();
-		delay(1000000);
-		clear_disp();
-		display_update();
-		delay(100000);
-	}
-	PORTD = 0x0; //Reset buttons
+
+	flicker();
 
 	gameon = 1;
 	while(gameon) {
@@ -190,29 +192,17 @@ int main(void) {
 		} else if ((p1 == 1) | (p2 == 1)) {
 			//If either has died, restart game
 			start(&player1, &player2);
+			delay(10000000);
+			clear_disp();
 		}
 		set_next_line(&player1, 1);
 		set_next_line(&player2, 1);
 		display_update();
 		delay(200000);
 	}
-	//Go by LEDs instead of player.lives
-	int id; //Which name to print (winner)
-	int lives = *pe;
-	int p1Lives = lives >> 5; //Three most significant
-	int p2Lives = lives & 0x7; //Three least significant
-	if(lives == 0) {
-		//Draw. Both lost the match at the same time.
-		id = 3;
-	} else if(p2Lives == 0) {
-		id = 1; //P2 loss --> P1 win and vice versa
-	} else if(p1Lives == 0) {
-		id = 2;
-	} else {
-		id = 4; //Something went wrong
-	}
-	endscreen(id);
-	display_update();
+
+	end();
+
 	for(;;) ;
 	return 0;
 }
